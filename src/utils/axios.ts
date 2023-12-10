@@ -17,6 +17,7 @@ AxiosInstance.interceptors.request.use((requestConfig) => {
 
   return requestConfig;
 }, (error) => {
+
   return Promise.reject(error);
 }, { synchronous: true });
 
@@ -35,7 +36,6 @@ AxiosInstance.interceptors.response.use((responseConfig) => {
 
   return responseConfig;
 }, (error) => {
-
   switch (error.response?.status) {
     case HttpStatusCode.Forbidden:
       break;

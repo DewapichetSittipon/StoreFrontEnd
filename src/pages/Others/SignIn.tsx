@@ -1,7 +1,10 @@
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { Input } from '../../components';
+import { Input, Loading } from '../../components';
 import { FormEvent, useState } from 'react';
 import { submitForm } from '../../utils';
+import { authenticationService } from '../../services';
+import { HttpStatusCode } from 'axios';
+import { AuthenticationModel } from '../../models';
 
 enum FormType {
   SIGN_IN,
@@ -17,6 +20,7 @@ export default function Signin() {
 
   return (
     <div style={{ height: "100vh" }}>
+      {/* <Loading show={showLoading} /> */}
       <div className="sign-in">
         <div className="content py-5">
           <Row className="text-center mt-3">
@@ -37,10 +41,24 @@ function FormSignIn(props: FormProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmitLogin = (event: FormEvent<HTMLFormElement>) => {
+  const signInAsync = async () => {
+    const { data, status } = await authenticationService.signInAsync(username, password);
+
+    if (status === HttpStatusCode.Ok) {
+      console.log(data);
+    }
+  };
+
+  const onSubmitLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     submitForm({});
+
+    if (!username || !password) {
+      return;
+    }
+
+    await signInAsync();
   };
 
   const onSignUp = () => {
@@ -88,15 +106,33 @@ function FormSignIn(props: FormProps) {
 }
 
 function FormSignUp(props: FormProps) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [signUpForm, setSignUpForm] = useState<AuthenticationModel>({} as AuthenticationModel);
+
+  const onChangeForm = (value: string | number, prop: keyof AuthenticationModel) => {
+    setSignUpForm({ ...signUpForm, [prop]: value });
+  };
+
+  const signUpAsync = async () => {
+    const { status } = await authenticationService.signUpAsync(signUpForm);
+
+    if (status === HttpStatusCode.Created) {
+      onSignIn();
+    }
+  };
 
   const onSubmitLogin = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     submitForm({});
+
+    if (!signUpForm.firstName ||
+      !signUpForm.lastName ||
+      !signUpForm.userName ||
+      !signUpForm.lastName) {
+      return;
+    }
+
+    signUpAsync();
   };
 
   const onSignIn = () => {
@@ -112,8 +148,8 @@ function FormSignUp(props: FormProps) {
             <Input
               label="First name"
               name='firstName'
-              value={firstName}
-              onChange={(value) => setFirstName(value)}
+              value={signUpForm.firstName}
+              onChange={(value) => onChangeForm(value, 'firstName')}
               rule={{ required: true }} />
           </Col>
         </Row>
@@ -122,8 +158,8 @@ function FormSignUp(props: FormProps) {
             <Input
               label="Last name"
               name='lastName'
-              value={lastName}
-              onChange={(value) => setLastName(value)}
+              value={signUpForm.lastName}
+              onChange={(value) => onChangeForm(value, 'lastName')}
               rule={{ required: true }} />
           </Col>
         </Row>
@@ -132,8 +168,8 @@ function FormSignUp(props: FormProps) {
             <Input
               label="Username"
               name='username'
-              value={username}
-              onChange={(value) => setUsername(value)}
+              value={signUpForm.userName}
+              onChange={(value) => onChangeForm(value, 'userName')}
               rule={{ required: true }} />
           </Col>
         </Row>
@@ -142,9 +178,9 @@ function FormSignUp(props: FormProps) {
             <Input
               label="Password"
               name='password'
-              value={password}
+              value={signUpForm.password}
               rule={{ required: true }}
-              onChange={(value) => setPassword(value)}
+              onChange={(value) => onChangeForm(value, 'password')}
               type="password" />
           </Col>
         </Row>
