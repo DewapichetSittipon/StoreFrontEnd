@@ -1,5 +1,6 @@
 import axios, { HttpStatusCode } from 'axios';
 import cookie from './cookie';
+import toast from './toast';
 
 const baseApiUrl = import.meta.env.VITE_APP_API_URL;
 
@@ -38,12 +39,20 @@ AxiosInstance.interceptors.response.use((responseConfig) => {
 }, (error) => {
   switch (error.response?.status) {
     case HttpStatusCode.Forbidden:
+      toast.error("ต้องห้าม");
+
       break;
     case HttpStatusCode.MethodNotAllowed:
+      toast.error("วิธีการไม่ได้รับอนุญาต");
+
       break;
     case HttpStatusCode.InternalServerError:
+      toast.error("ข้อผิดพลาดเซิร์ฟเวอร์");
+
       break;
     case HttpStatusCode.NotFound:
+      toast.error("ไม่พบข้อมูล");
+
       break;
   }
 

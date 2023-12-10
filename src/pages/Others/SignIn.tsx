@@ -1,52 +1,77 @@
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { Input, Loading } from '../../components';
-import { FormEvent, useState } from 'react';
-import { submitForm } from '../../utils';
+import { Dispatch, FormEvent, SetStateAction, createContext, useContext, useMemo, useState } from 'react';
+import { setAccessToken, submitForm } from '../../utils';
 import { authenticationService } from '../../services';
 import { HttpStatusCode } from 'axios';
 import { AuthenticationModel } from '../../models';
+import toast from '../../utils/toast';
 
 enum FormType {
   SIGN_IN,
   SIGN_UP,
 };
 
-interface FormProps {
-  setFormType: (type: FormType) => void;
-}
+type SigninContext = {
+  showLoading: boolean;
+  formType: FormType;
+  setShowLoading: Dispatch<SetStateAction<boolean>>;
+  setFormType: Dispatch<SetStateAction<FormType>>;
+};
+
+const Context = createContext({} as SigninContext);
 
 export default function Signin() {
-  const [formType, setFromType] = useState<FormType>(FormType.SIGN_IN);
+  const [formType, setFormType] = useState<FormType>(FormType.SIGN_IN);
+  const [showLoading, setShowLoading] = useState(false);
+
+  const contextValue = useMemo(() => {
+    return {
+      showLoading,
+      formType,
+      setShowLoading,
+      setFormType,
+    }
+  }, [showLoading, formType, setShowLoading, setFormType]);
 
   return (
-    <div style={{ height: "100vh" }}>
-      {/* <Loading show={showLoading} /> */}
-      <div className="sign-in">
-        <div className="content py-5">
-          <Row className="text-center mt-3">
-            <Col xs={12}>
-              <h3>STORE</h3>
-            </Col>
-          </Row>
-          {formType === FormType.SIGN_IN
-            ? <FormSignIn setFormType={(value) => setFromType(value)} />
-            : <FormSignUp setFormType={(value) => setFromType(value)} />}
+    <Context.Provider value={contextValue}>
+      <div style={{ height: "100vh" }}>
+        <Loading show={showLoading} />
+        <div className="sign-in">
+          <div className="content py-5">
+            <Row className="text-center mt-3">
+              <Col xs={12}>
+                <h3>STORE</h3>
+              </Col>
+            </Row>
+            {formType === FormType.SIGN_IN
+              ? <FormSignIn />
+              : <FormSignUp />}
+          </div>
         </div>
       </div>
-    </div>
+    </Context.Provider>
   );
 }
 
-function FormSignIn(props: FormProps) {
+function FormSignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setFormType, setShowLoading } = useContext(Context);
 
   const signInAsync = async () => {
+    setShowLoading(true);
+
     const { data, status } = await authenticationService.signInAsync(username, password);
 
     if (status === HttpStatusCode.Ok) {
-      console.log(data);
+      setAccessToken(data.access_token, data.role);
+
+      toast.success('เข้าสู่ระบบสำเร็จ');
     }
+
+    setShowLoading(false);
   };
 
   const onSubmitLogin = async (event: FormEvent<HTMLFormElement>) => {
@@ -62,7 +87,7 @@ function FormSignIn(props: FormProps) {
   };
 
   const onSignUp = () => {
-    props.setFormType(FormType.SIGN_UP);
+    setFormType(FormType.SIGN_UP);
   };
 
   return (
@@ -105,22 +130,29 @@ function FormSignIn(props: FormProps) {
   );
 }
 
-function FormSignUp(props: FormProps) {
+function FormSignUp() {
   const [signUpForm, setSignUpForm] = useState<AuthenticationModel>({} as AuthenticationModel);
+  const { setFormType, setShowLoading } = useContext(Context);
 
   const onChangeForm = (value: string | number, prop: keyof AuthenticationModel) => {
     setSignUpForm({ ...signUpForm, [prop]: value });
   };
 
   const signUpAsync = async () => {
+    setShowLoading(true);
+
     const { status } = await authenticationService.signUpAsync(signUpForm);
 
     if (status === HttpStatusCode.Created) {
       onSignIn();
+
+      toast.success('ลงทะเบียนสำเร็จ');
     }
+
+    setShowLoading(false);
   };
 
-  const onSubmitLogin = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmitSignUp = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     submitForm({});
@@ -136,13 +168,13 @@ function FormSignUp(props: FormProps) {
   };
 
   const onSignIn = () => {
-    props.setFormType(FormType.SIGN_IN);
+    setFormType(FormType.SIGN_IN);
   };
 
   return (
     <>
       <p className='text-center mt-5'>Register</p>
-      <Form onSubmit={onSubmitLogin}>
+      <Form onSubmit={onSubmitSignUp}>
         <Row className="justify-content-center mt-3">
           <Col xs={8}>
             <Input
