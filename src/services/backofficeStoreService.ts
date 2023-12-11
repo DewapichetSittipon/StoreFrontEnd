@@ -47,7 +47,7 @@ const deleteStoreAsync = async (id: string) => {
   return await http.delete(`api/backoffice/store/${id}`);
 };
 
-const storeService = {
+const backofficeStoreService = {
   getStoreListAsync,
   createStoreAsync,
   deleteStoreAsync,
@@ -55,4 +55,4 @@ const storeService = {
   updateStoreAsync,
 };
 
-export default storeService;
+export default backofficeStoreService;

@@ -1,6 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useState, Dispatch, SetStateAction, useMemo, createContext } from "react";
-import Navbar from "../components/NavbarAdmin";
+import NavbarAdmin from "../components/NavbarAdmin";
+import NavbarUser from "../components/NavbarUser";
 
 type SigninContext = {
   showLoading: boolean;
@@ -11,6 +12,7 @@ export const PageBaseContext = createContext({} as SigninContext);
 
 export default function PageBase() {
   const [showLoading, setShowLoading] = useState(false);
+  const currentPath = useLocation();
 
   const contextValue = useMemo(() => {
     return {
@@ -22,7 +24,7 @@ export default function PageBase() {
   return (
     <>
       <PageBaseContext.Provider value={contextValue}>
-        <Navbar />
+        {currentPath.pathname.includes('admin') ? <NavbarAdmin /> : <NavbarUser />}
         <Outlet />
       </PageBaseContext.Provider>
     </>

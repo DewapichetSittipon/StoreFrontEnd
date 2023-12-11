@@ -5,6 +5,7 @@ import { setAccessToken, submitForm } from '../../utils';
 import { authenticationService } from '../../services';
 import { HttpStatusCode } from 'axios';
 import { AuthenticationModel } from '../../models';
+import { useNavigate } from 'react-router-dom';
 import toast from '../../utils/toast';
 
 enum FormType {
@@ -59,6 +60,7 @@ function FormSignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { setFormType, setShowLoading } = useContext(Context);
+  const navigate = useNavigate();
 
   const signInAsync = async () => {
     setShowLoading(true);
@@ -69,6 +71,8 @@ function FormSignIn() {
       setAccessToken(data.access_token, data.role, data.firstName, data.lastName);
 
       toast.success('เข้าสู่ระบบสำเร็จ');
+
+      navigate('/store');
     }
 
     setShowLoading(false);

@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login, NotFound } from "./pages/Others";
 import { Store, User } from "./pages/Admin";
+import { UserStore } from "./pages/User";
 import PageBase from "./pages/PageBase";
 import App from "./App";
 
@@ -22,6 +23,13 @@ const admin = [
   }
 ];
 
+const user = [
+  {
+    path: '/store',
+    element: <UserStore />
+  }
+];
+
 export const router = createBrowserRouter([
   {
     element: <App />,
@@ -31,6 +39,7 @@ export const router = createBrowserRouter([
         element: <PageBase />,
         children: [
           ...admin,
+          ...user,
         ]
       },
       ...other,
