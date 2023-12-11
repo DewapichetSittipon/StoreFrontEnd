@@ -2,7 +2,7 @@ import { Col, Row, Button, Card } from 'react-bootstrap';
 import { Input, Loading } from '../../../components';
 import { FaSearch, FaPlusCircle, FaRegEye, FaTrashAlt } from 'react-icons/fa';
 import { AiOutlineClear } from 'react-icons/ai';
-import { storeService } from '../../../services';
+import { backofficeStoreService } from '../../../services';
 import { useEffect, useState, useContext } from 'react';
 import { StoreListResponseModel } from '../../../models';
 import { HttpStatusCode } from 'axios';
@@ -27,7 +27,7 @@ export default function Store() {
   const getStoreListAsync = async (newKeyWord?: string) => {
     setShowLoading(true);
 
-    const { data, status } = await storeService.getStoreListAsync(page, size, newKeyWord ?? keyword);
+    const { data, status } = await backofficeStoreService.getStoreListAsync(page, size, newKeyWord ?? keyword);
 
     if (status === HttpStatusCode.Ok) {
       setStoreList(data.data);
@@ -39,7 +39,7 @@ export default function Store() {
   const deleteStoreAsync = async (id: string) => {
     setShowLoading(true);
 
-    const { status } = await storeService.deleteStoreAsync(id);
+    const { status } = await backofficeStoreService.deleteStoreAsync(id);
 
     if (status === HttpStatusCode.NoContent) {
       toast.success('ลบข้อมูลสำเร็จ');

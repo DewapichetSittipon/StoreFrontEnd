@@ -1,7 +1,7 @@
 import authenticationService from './authenticationService';
-import storeService from './storeService';
+import backofficeStoreService from './backofficeStoreService';
 
 export {
   authenticationService,
-  storeService,
+  backofficeStoreService,
 }

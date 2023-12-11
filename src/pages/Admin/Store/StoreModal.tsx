@@ -3,7 +3,7 @@ import { StoreCreateUpdateModel } from "../../../models";
 import { Input, Modal, DragDropImage, Loading } from "../../../components";
 import { Button, Form } from "react-bootstrap";
 import { submitForm } from "../../../utils";
-import { storeService } from "../../../services";
+import { backofficeStoreService } from "../../../services";
 import { HttpStatusCode } from "axios";
 import { PageBaseContext } from "../../PageBase";
 import toast from "../../../utils/toast";
@@ -32,7 +32,7 @@ export default function ModalStore(props: Props) {
   const getDetailAsync = async (id: string) => {
     setShowLoading(true);
 
-    const { data, status } = await storeService.getStoreDetailAsync(id);
+    const { data, status } = await backofficeStoreService.getStoreDetailAsync(id);
 
     if (status === HttpStatusCode.Ok) {
       setBannerImage(data.banner);
@@ -71,7 +71,7 @@ export default function ModalStore(props: Props) {
   const onCreateStoreAsync = async () => {
     setShowLoading(true);
 
-    const { status } = await storeService.createStoreAsync(storeForm);
+    const { status } = await backofficeStoreService.createStoreAsync(storeForm);
 
     if (status === HttpStatusCode.Created) {
       clearForm();
@@ -87,7 +87,7 @@ export default function ModalStore(props: Props) {
   const onUpdateStoreAsync = async (id: string) => {
     setShowLoading(true);
 
-    const { status } = await storeService.updateStoreAsync(storeForm, id);
+    const { status } = await backofficeStoreService.updateStoreAsync(storeForm, id);
 
     if (status === HttpStatusCode.Accepted) {
       clearForm();
