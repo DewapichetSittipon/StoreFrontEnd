@@ -66,7 +66,7 @@ function FormSignIn() {
     const { data, status } = await authenticationService.signInAsync(username, password);
 
     if (status === HttpStatusCode.Ok) {
-      setAccessToken(data.access_token, data.role);
+      setAccessToken(data.access_token, data.role, data.firstName, data.lastName);
 
       toast.success('เข้าสู่ระบบสำเร็จ');
     }
