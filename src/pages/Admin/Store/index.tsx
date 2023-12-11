@@ -59,6 +59,14 @@ export default function Store() {
     setShowModal(true);
   };
 
+  const onHideModal = async (onCreateUpdate: boolean) => {
+    setShowModal(false);
+
+    if (onCreateUpdate) {
+      await getStoreListAsync();
+    }
+  };
+
   return (
     <div className="mx-5 mt-5">
       <Loading show={showLoading} />
@@ -96,7 +104,7 @@ export default function Store() {
           </Col>
         )) : <div className='text-center'>ไม่พบข้อมูลร้านค้า</div>}
       </Row>
-      <ModalStore show={showModal} onHide={() => setShowModal(false)} />
+      <ModalStore show={showModal} onHide={(value) => onHideModal(value)} />
     </div >
   );
 }
