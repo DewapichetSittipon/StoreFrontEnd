@@ -42,6 +42,18 @@ export default function ModalStore(props: Props) {
           value={storeForm.description}
           onChange={(value) => onChagneForm(value, 'description')}
         />
+        <Input
+          label='latitude'
+          rule={{ required: true }}
+          value={storeForm.latitude}
+          onChange={(value) => onChagneForm(value, 'description')}
+        />
+        <Input
+          label='logitude'
+          rule={{ required: true }}
+          value={storeForm.longitude}
+          onChange={(value) => onChagneForm(value, 'description')}
+        />
         <div className='d-flex align-items-center mt-5 gap-5'>
           <Button variant='outline-dark' className='w-50' onClick={props.onHide}>
             ยกเลิก

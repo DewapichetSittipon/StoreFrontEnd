@@ -4,3 +4,4 @@ export * from './Loading';
 export * from './NavbarAdmin';
 export * from './Modal';
 export * from './DragDropImage';
+export * from './GoogleMap';
