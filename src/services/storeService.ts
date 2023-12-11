@@ -25,6 +25,24 @@ const createStoreAsync = async (body: StoreCreateUpdateModel) => {
   return await http.post('api/backoffice/store', formData);
 };
 
+const updateStoreAsync = async (body: StoreCreateUpdateModel, id: string) => {
+  const formData = new FormData();
+  formData.append('name', body.name);
+  formData.append('description', body.description);
+  formData.append('latitude', body.latitude);
+  formData.append('longitude', body.longitude);
+
+  if (body.image) {
+    formData.append('image', body.image);
+  }
+
+  return await http.put(`api/backoffice/store/${id}`, formData);
+};
+
+const getStoreDetailAsync = async (id: string) => {
+  return await http.get(`api/backoffice/store/${id}`);
+};
+
 const deleteStoreAsync = async (id: string) => {
   return await http.delete(`api/backoffice/store/${id}`);
 };
@@ -33,6 +51,8 @@ const storeService = {
   getStoreListAsync,
   createStoreAsync,
   deleteStoreAsync,
+  getStoreDetailAsync,
+  updateStoreAsync,
 };
 
 export default storeService;

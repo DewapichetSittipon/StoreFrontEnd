@@ -1,9 +1,10 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, Image } from "react-bootstrap";
 import { FaCloudArrowUp } from 'react-icons/fa6';
-import { convertFileToBase64 } from "../utils";
+import { convertFileToBase64, getFileImage } from "../utils";
 
 interface Props {
+  image?: string;
   onSelect: (file: File) => void;
 }
 
@@ -11,6 +12,12 @@ export function DragDropImage(props: Props) {
   const [imagePreview, setImagePreview] = useState("");
   const size = 10 * (1024 * 1024);
   const file = useRef({} as HTMLInputElement);
+
+  useEffect(() => {
+    if (props.image) {
+      setImagePreview(getFileImage(props.image));
+    }
+  }, [props.image]);
 
   const dragover = (event: any) => {
     event.preventDefault();

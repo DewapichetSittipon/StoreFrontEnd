@@ -17,6 +17,7 @@ export default function Store() {
   const [keyword, setKeyword] = useState("");
   const [storeList, setStoreList] = useState<StoreListResponseModel[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [storeId, setStoreId] = useState<string>();
   const { showLoading, setShowLoading } = useContext(PageBaseContext);
 
   useEffect(() => {
@@ -55,8 +56,9 @@ export default function Store() {
     await getStoreListAsync('');
   };
 
-  const onCreateStore = () => {
+  const onOpenModal = (id?: string) => {
     setShowModal(true);
+    setStoreId(id);
   };
 
   const onHideModal = async (onCreateUpdate: boolean) => {
@@ -81,16 +83,21 @@ export default function Store() {
       </Row >
       <Row>
         <Col md="12" className='d-flex justify-content-end mt-3'>
-          <Button variant='outline-dark' onClick={onCreateStore}>
+          <Button variant='outline-dark' onClick={() => onOpenModal()}>
             <FaPlusCircle /> Create Store
           </Button>
         </Col>
       </Row>
       <Row className='mt-3'>
         {storeList?.length > 0 ? storeList?.map(d => (
-          <Col md="6" lg="4" xl="3" xxl="2" className='mt-3' key={d.name}>
-            <Card style={{ width: '18rem' }}>
-              <Card.Img className='cursor-pointer' variant="top" src={getFileImage(d.banner)} height={220} />
+          <Col sm="6" md="6" lg="4" xl="3" xxl="2" className='mt-3' key={d.name}>
+            <Card>
+              <Card.Img
+                className='cursor-pointer'
+                variant="top"
+                src={getFileImage(d.banner)}
+                height={220}
+                onClick={() => onOpenModal(d.id)} />
               <Card.Body>
                 <Card.Title className='d-flex align-content-center justify-content-between mt-3'>
                   <h4>{d.name}</h4>
@@ -104,7 +111,11 @@ export default function Store() {
           </Col>
         )) : <div className='text-center'>ไม่พบข้อมูลร้านค้า</div>}
       </Row>
-      <ModalStore show={showModal} onHide={(value) => onHideModal(value)} />
+      <ModalStore
+        show={showModal}
+        id={storeId}
+        onHide={(value) => onHideModal(value)}
+      />
     </div >
   );
 }
