@@ -5,3 +5,4 @@ export * from './form';
 export * from './authen';
 export * from './toast';
 export * from './getFile';
+export * from './convert';

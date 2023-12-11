@@ -11,3 +11,11 @@ export interface StoreListResponseModel {
   updateBy: string;
   updateDate: Date;
 }
+
+export interface StoreCreateUpdateModel {
+  name: string;
+  description: string;
+  image?: File;
+  latitude: string;
+  longitude: string;
+}

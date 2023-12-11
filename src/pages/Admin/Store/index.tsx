@@ -1,5 +1,5 @@
-import { Col, Row, Button, Card, Form } from 'react-bootstrap';
-import { Input, Modal, Loading } from '../../../components';
+import { Col, Row, Button, Card } from 'react-bootstrap';
+import { Input, Loading } from '../../../components';
 import { FaSearch, FaPlusCircle, FaRegEye, FaTrashAlt } from 'react-icons/fa';
 import { AiOutlineClear } from 'react-icons/ai';
 import { storeService } from '../../../services';
@@ -9,6 +9,7 @@ import { HttpStatusCode } from 'axios';
 import { getFileImage } from '../../../utils';
 import { PageBaseContext } from '../../PageBase';
 import toast from '../../../utils/toast';
+import ModalStore from './StoreModal';
 
 export default function Store() {
   const [page] = useState(1);
@@ -54,6 +55,10 @@ export default function Store() {
     await getStoreListAsync('');
   };
 
+  const onCreateStore = () => {
+    setShowModal(true);
+  };
+
   return (
     <div className="mx-5 mt-5">
       <Loading show={showLoading} />
@@ -68,7 +73,7 @@ export default function Store() {
       </Row >
       <Row>
         <Col md="12" className='d-flex justify-content-end mt-3'>
-          <Button variant='outline-dark'>
+          <Button variant='outline-dark' onClick={onCreateStore}>
             <FaPlusCircle /> Create Store
           </Button>
         </Col>
@@ -93,15 +98,5 @@ export default function Store() {
       </Row>
       <ModalStore show={showModal} onHide={() => setShowModal(false)} />
     </div >
-  );
-}
-
-function ModalStore(props: { id?: string, show: boolean, onHide: () => void }) {
-  return (
-    <Modal show={props.show} onHide={props.onHide}>
-      <Form>
-
-      </Form>
-    </Modal>
   );
 }
