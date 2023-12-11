@@ -80,7 +80,7 @@ export default function Store() {
             <AiOutlineClear className="cursor-pointer text-danger" size="24" onClick={onClearCriteriaSearch} />
           </div>
         </Col>
-      </Row >
+      </Row>
       <Row>
         <Col md="12" className='d-flex justify-content-end mt-3'>
           <Button variant='outline-dark' onClick={() => onOpenModal()}>
