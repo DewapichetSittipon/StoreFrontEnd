@@ -54,6 +54,10 @@ AxiosInstance.interceptors.response.use((responseConfig) => {
       toast.error("ไม่พบข้อมูล");
 
       break;
+    case HttpStatusCode.Unauthorized:
+      toast.error("ไม่มีสิทธิ์การเข้าถึง");
+
+      break;
   }
 
   return error.response;

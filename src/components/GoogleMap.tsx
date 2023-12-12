@@ -30,7 +30,7 @@ export default function GoogleMap(props: Props) {
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: baseApiGG }}
-          defaultCenter={defaultProps.center}
+          center={defaultProps.center}
           defaultZoom={defaultProps.zoom}
         >
           <AnyReactComponent
