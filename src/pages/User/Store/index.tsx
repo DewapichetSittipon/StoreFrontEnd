@@ -1,5 +1,5 @@
 import { Card, Col, Row } from "react-bootstrap";
-import { Input, Loading } from "../../../components";
+import { Input } from "../../../components";
 import { FaSearch } from "react-icons/fa";
 import { AiOutlineClear } from "react-icons/ai";
 import { getFileImage } from "../../../utils";
@@ -17,7 +17,7 @@ export default function UserStore() {
   const [storeList, setStoreList] = useState<StoreListResponseModel[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [storeId, setStoreId] = useState<string>("");
-  const { showLoading, setShowLoading } = useContext(PageBaseContext);
+  const { setShowLoading } = useContext(PageBaseContext);
 
   useEffect(() => {
     getStoreListAsync();
@@ -48,7 +48,6 @@ export default function UserStore() {
 
   return (
     <div className="mx-5 mt-5">
-      <Loading show={showLoading} />
       <Row className='d-flex justify-content-end'>
         <Col md="4">
           <div className='d-flex align-items-center'>

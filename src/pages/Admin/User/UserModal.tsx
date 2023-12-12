@@ -1,5 +1,5 @@
 import { Button, Form } from "react-bootstrap";
-import { Input, Loading, Modal } from "../../../components";
+import { Input, Modal } from "../../../components";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { UserCreateUpdateModel } from "../../../models";
 import { submitForm } from "../../../utils";
@@ -16,7 +16,7 @@ interface Props {
 
 export default function UserModal(props: Props) {
   const [userForm, setUserForm] = useState<UserCreateUpdateModel>({} as UserCreateUpdateModel);
-  const { showLoading, setShowLoading } = useContext(PageBaseContext);
+  const { setShowLoading } = useContext(PageBaseContext);
 
   useEffect(() => {
     if (props.show && props.id) {
@@ -102,7 +102,6 @@ export default function UserModal(props: Props) {
 
   return (
     <Modal show={props.show} onHide={() => { }}>
-      <Loading show={showLoading} />
       <Form className='mx-5' onSubmit={onSubmitForm}>
         <Input
           label='ชื่อ'

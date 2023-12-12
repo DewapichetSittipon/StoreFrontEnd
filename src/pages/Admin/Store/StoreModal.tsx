@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { StoreCreateUpdateModel } from "../../../models";
-import { Input, Modal, DragDropImage, Loading } from "../../../components";
+import { Input, Modal, DragDropImage } from "../../../components";
 import { Button, Form } from "react-bootstrap";
 import { submitForm } from "../../../utils";
 import { backofficeStoreService } from "../../../services";
@@ -21,7 +21,7 @@ export default function ModalStore(props: Props) {
     longitude: '100.3212781'
   } as StoreCreateUpdateModel);
   const [bannerImage, setBannerImage] = useState<string>();
-  const { showLoading, setShowLoading } = useContext(PageBaseContext);
+  const { setShowLoading } = useContext(PageBaseContext);
 
   useEffect(() => {
     if (props.show && props.id) {
@@ -116,7 +116,6 @@ export default function ModalStore(props: Props) {
 
   return (
     <Modal show={props.show} onHide={() => { }}>
-      <Loading show={showLoading} />
       <Form className='mx-5' onSubmit={onSubmitForm}>
         <Form.Label>รูป Banner</Form.Label>
         <div style={{ height: "250px" }} className="mb-3">

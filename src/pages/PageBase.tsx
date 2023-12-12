@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useState, Dispatch, SetStateAction, useMemo, createContext } from "react";
 import NavbarAdmin from "../components/NavbarAdmin";
 import NavbarUser from "../components/NavbarUser";
+import { Loading } from "../components";
 
 type SigninContext = {
   showLoading: boolean;
@@ -25,6 +26,7 @@ export default function PageBase() {
     <>
       <PageBaseContext.Provider value={contextValue}>
         {currentPath.pathname.includes('admin') ? <NavbarAdmin /> : <NavbarUser />}
+        <Loading show={showLoading} />
         <Outlet />
       </PageBaseContext.Provider>
     </>

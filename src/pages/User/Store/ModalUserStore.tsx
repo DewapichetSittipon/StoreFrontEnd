@@ -1,4 +1,4 @@
-import { Loading, Modal } from "../../../components";
+import { Modal } from "../../../components";
 import { Image } from 'react-bootstrap';
 import { PageBaseContext } from "../../PageBase";
 import { useContext, useEffect, useState } from "react";
@@ -20,7 +20,7 @@ export default function ModalUserStore(props: Props) {
     latitude: '13.7247376',
     longitude: '100.3212781'
   } as StoreListResponseModel);
-  const { showLoading, setShowLoading } = useContext(PageBaseContext);
+  const { setShowLoading } = useContext(PageBaseContext);
 
   useEffect(() => {
     if (props.show && props.id) {
@@ -43,7 +43,6 @@ export default function ModalUserStore(props: Props) {
   return (
     <>
       <Modal show={props.show} onHide={() => { }}>
-        <Loading show={showLoading} />
         <div className="d-flex justify-content-between">
           <label>รูป Banner</label>
           <FaTimes className="cursor-pointer" onClick={() => props.onHide()} />

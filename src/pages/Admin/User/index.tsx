@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "react-bootstrap";
-import { Input, Loading } from "../../../components";
+import { Input } from "../../../components";
 import { FaPlusCircle, FaSearch, FaTrashAlt, FaUserAlt } from "react-icons/fa";
 import { AiOutlineClear } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
@@ -17,7 +17,7 @@ export default function User() {
   const [userList, setUserList] = useState<UserListResponseModel[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [userId, setUserId] = useState<string>();
-  const { showLoading, setShowLoading } = useContext(PageBaseContext);
+  const { setShowLoading } = useContext(PageBaseContext);
 
   useEffect(() => {
     getUserListAsync();
@@ -70,7 +70,6 @@ export default function User() {
 
   return (
     <div className="mx-5 mt-5">
-      <Loading show={showLoading} />
       <Row className='d-flex justify-content-end'>
         <Col md="4">
           <div className='d-flex align-items-center'>
